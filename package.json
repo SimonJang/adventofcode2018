@@ -1,0 +1,40 @@
+{
+	"name": "adventofcode2018",
+	"version": "0.0.0",
+	"description": "Advent of code 2018",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"lint": "tslint -p . --format stylish",
+		"build": "npm run clean && tsc -p tsconfig.json && npm run assets",
+		"assets": "cpy './data/*.txt' '../dist' --cwd=source --parents",
+		"test": "npm run build && ava dist/test",
+		"clean": "del-cli dist"
+	},
+	"engines": {
+		"node": ">=6"
+	},
+	"keywords": [],
+	"files": [
+		"dist/"
+	],
+	"author": {
+		"name": "Simon",
+		"email": "simon.jang.contact@gmail.com"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^9.6.5",
+		"ava": "^0.25.0",
+		"cpy-cli": "^2.0.0",
+		"del-cli": "^0.2.1",
+		"tslint": "^5.9.1",
+		"tslint-xo": "^0.7.0",
+		"typescript": "^2.8.1"
+	},
+	"ava": {
+		"files": [
+			"./dist/test/*.js"
+		]
+	}
+}
