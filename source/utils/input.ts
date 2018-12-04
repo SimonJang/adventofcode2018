@@ -42,3 +42,26 @@ export const parseOutputDay3 = (data: Buffer) => {
 			}, {});
 	});
 };
+
+export const parseOutputDay4 = (data: Buffer) => {
+	const rows = parseTextToArray(data);
+
+	return rows.map(row => {
+		const [date, time, ...args] = row.split(' ');
+
+		const cleanDate = date.replace('[', '');
+		const cleanTime = time.replace(']', '');
+
+		const guard = args.find(text => text.startsWith('#'));
+
+		const [, minutes] = cleanTime.split(':');
+
+		return {
+			timestamp: `${cleanDate} ${cleanTime}`,
+			minutes: Number(minutes),
+			description: args.join(' '),
+			guard: guard ? Number(guard.replace('#', '')) : undefined
+		};
+	})
+	.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+};
