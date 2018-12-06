@@ -65,3 +65,16 @@ export const parseOutputDay4 = (data: Buffer) => {
 	})
 	.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
 };
+
+export const parseOutputDay6 = (data: Buffer) => {
+	const rows = parseTextToArray(data);
+
+	return rows.map(row => {
+		const [x, y] = row.split(',');
+
+		return {
+			x: Number(x.trim()),
+			y: Number(y.trim())
+		};
+	});
+};
