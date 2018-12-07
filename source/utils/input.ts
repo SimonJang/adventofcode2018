@@ -78,3 +78,47 @@ export const parseOutputDay6 = (data: Buffer) => {
 		};
 	});
 };
+
+export const parseOutputDay7 = (data: Buffer) => {
+	const rows = parseTextToArray(data);
+
+	const dep = new Set<string>();
+
+	const rowData = rows.map(row => {
+		const [cost, step] = row.split(' ').filter(item => item.length === 1).map(item => item.toLowerCase());
+
+		dep.add(cost);
+
+		return {cost, step};
+	});
+
+	const rowMap = new Map<string, string[]>();
+
+	for (const {cost, step} of rowData) {
+		const mapValue = rowMap.get(step) || [];
+		mapValue.push(cost);
+		rowMap.set(step, mapValue);
+	}
+
+	const allCosts = new Set([...rowMap.values()].reduce((container, current) => {
+		container.push(...current);
+
+		return container;
+	}, [] as any));
+
+	for (const dependency of [...dep.values()]) {
+		if (rowMap.has(dependency)) {
+			continue;
+		}
+
+		rowMap.set(dependency, []);
+	}
+
+	return [...rowMap.entries()].map(([key, value]) => {
+		if (allCosts.has(key)) {
+			return {step: key, cost: value};
+		}
+
+		return {step: key, cost: value, end: true};
+	});
+};
